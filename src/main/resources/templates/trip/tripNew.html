@@ -1,0 +1,200 @@
+<html>
+    <head>
+    <div th:insert="~{fragments/head :: head}">...</div>
+    <script type="text/javascript" th:src="@{/resources/fonts/tripForm.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/fonts/moment-with-locales.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/fonts/datetimepicker.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/fonts/bootstrap-datetimepicker.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/resources/fonts/bootstrap-datetimepicker.css}">
+</head>
+<body>
+    <div th:insert="~{fragments/header :: body}">...</div>
+    <hr>
+    <div class="container">
+        <div class="row">
+            <div class="alert alert-danger" th:if="${result != null}" >
+                <div th:each="error : ${result}">
+                    <strong th:if="${error.codes != null }" th:text="${error.codes[1]}"></strong><p th:text="${error.DefaultMessage}"></p>
+                </div>
+            </div>
+            <h1 th:text="#{addTrip}" />
+            <form class="form-inline" id="lista" th:action="@{/trip/new}" th:object="${trip}" method="post" enctype="multipart/form-data" >
+                <fieldset>
+                    <legend th:text="#{product}"></legend>
+                    <div  class="col-md-6 col-md-offset-3">
+                        <div class="form-group">
+                            <label class="col-md-12 control-label" th:text="#{productName}"></label>
+                            <input id="nametrip"  th:field="*{name}"  type="text" placeholder="Name Trip"  class=" form-control input-md" required="require">
+                            <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" ></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label class="col-md-12 control-label" for="textinput" th:text="#{productDuration}"></label>
+                            <select  id="daystrip" th:field="*{duration}"  class="form-control">
+                                <div th:each="i,it :${new int [9]}" >
+                                    <option th:value="${it.count}" th:text="${it.count}"></option>
+                                </div>
+                            </select>
+                            <span  th:if="${#fields.hasErrors('duration')}" class="text-danger"   th:errors="*{duration}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12  control-label" for="textinput" th:text="#{productPrice}"></label>
+                            <div class=" input-group">
+                                <input id="price"  th:field="*{pricesingle}" type="number" placeholder="placeholder" class="form-control input-md"  step="any" required="require">
+                                <span class="input-group-addon"><i class="fa fa-eur" aria-hidden="true"></i></span>
+                                <b th:if="${#fields.hasErrors('pricesingle')}" class="text-danger" th:errors="*{pricesingle}"></b>
+                            </div>
+                        </div> 
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <hr>
+                        <legend th:text="#{productDescription}"></legend>
+                        <div class="col-md-4">
+                            <b th:text="#{productDescriptionES}"></b>
+
+                            <textarea rows="4" cols="40" th:field="*{descripcion_es}"   name="description_es" type="text"  placeholder="descripción de viaje en Castellano"  class="form-control" required="require"></textarea>
+                            <span class="help-block"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <b th:text="#{productDescriptionCA}"></b>
+                            <textarea rows="4" cols="40" th:field="*{descripcion_ca}" type="text" placeholder="descripció del viatge en Català" class="form-control" required="require"></textarea>
+                            <span class="help-block"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <b th:text="#{productDescriptionEN}"></b>
+                            <textarea rows="4" cols="40" th:field="*{descripcion_en}" type="text" placeholder="description trip in English" class="form-control" required="require"></textarea>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <hr>
+                    <legend th:text="#{producteRangeDays}"></legend>
+                    <div class="form-group">
+                        <label class="col-md-12 control-label" th:text="#{firstDeparture}"></label>
+                        <div class="col-md-12">
+                            <div class="input-group date" id="datetimepicker1">
+                                <input type="text" name="first" placeholder="YYYY-mm-dd" class="form-control input-md" >
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar">
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12 control-label" th:text="#{lastDeparture}" ></label>
+                        <div class="col-md-12">
+                            <div class="input-group date" id="datetimepicker2">
+                                <input type="text" name="last" placeholder="YYYY-mm-dd" class="form-control input-md">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <legend th:text="#{departureDates}"></legend>
+                    <div class="form-group ">
+                        <div class="col-md-3">
+                            <div   class="input-group date"  id="datetimepicker3">
+                                <input  name="departuredates" type="text" placeholder="YYYY-MMM-dd" class="form-control input-md" >
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div   class="input-group date"  id="datetimepicker4">
+                                <input  name="departuredates" type="text" placeholder="YYYY-MMM-dd" class="form-control input-md" >
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div   class="input-group date"  id="datetimepicker5">
+                                <input  name="departuredates" type="text" placeholder="YYYY-MMM-dd" class="form-control input-md" >
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div   class="input-group date"  id="datetimepicker6">
+                                <input  name="departuredates" type="text" placeholder="YYYY-MMM-dd" class="form-control input-md" >
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <hr>
+                    <legend th:text="#{itinerary}"></legend>
+                    <div class="form-group">
+                        <label class="col-md-12 control-label" for="textinput" th:text="#{tripDays}">
+                        </label>
+                        <div class="col-md-4">
+                            Day 1 ES *
+                            <textarea rows="4" cols="40" name="day_es" type="text"   class="form-control" required="require"></textarea>
+                            <span class="help-block"></span>
+                        </div>
+                        <div class="col-md-4">
+                            Day 1 CA *
+                            <textarea rows="4" cols="40" name="day_ca" type="text" class="form-control" required="require"></textarea>
+                            <span class="help-block"></span>
+                        </div>
+                        <div class="col-md-4">
+                            Day 1 EN *
+                            <textarea rows="4" cols="40" name="day_en" type="text"  class="form-control" required="require"></textarea>
+                            <span class="help-block"></span>
+                        </div>
+                        <div class="input_div"></div>
+                    </div>
+                    <button class="add_button btn btn-default" th:text="#{addDay}"></button>
+                    <hr>
+                    <legend th:text="#{hotels}"></legend>
+                    <div class="form-group">
+                        <label class="col-md-12 control-label" for="checkboxes"></label>
+                        <input type="hidden" class="hidden"  name="hoteles" value=''>
+                        <div class="checkboox col-md-4" th:each="hotel : ${hoteles}"  >
+                            <label  th:for="${hotel.name}">
+                                <input type="checkbox" name="hoteles" th:value="${hotel.id}">
+                                <b th:text="${hotel.name}"></b>
+                            </label>
+                        </div>
+                    </div>
+                    <hr>
+                    <legend th:text="#{coverImage}"></legend>
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <input name="file" class="input-file btn btn-primary" type="file">
+                        </div>
+                    </div>
+                    <hr>
+                    <br />
+                    <legend th:text="#{sliderImage}"></legend>
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <div class="input_fields_wrap">
+                            </div>
+                            <button class="add_field_button btn btn-default" th:text="#{addImage}"></button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary" th:text="#{create}"></button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+    
+    <div th:insert="~{fragments/footer :: body}">...</div>
+    
+    
+       <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker({locale : 'es', viewMode: 'years', format: 'YYYY/MMM/DD'});
+            $('#datetimepicker2').datetimepicker({locale : 'es', viewMode: 'years', format: 'YYYY-MMM-DD'});
+            $('#datetimepicker3').datetimepicker({locale : 'es', viewMode: 'years', format: 'YYYY/MMM/DD'});
+            $('#datetimepicker4').datetimepicker({locale : 'es', viewMode: 'years', format: 'YYYY/MMM/DD'});
+            $('#datetimepicker5').datetimepicker({locale : 'es', viewMode: 'years', format: 'YYYY/MMM/DD'});
+            $('#datetimepicker6').datetimepicker({locale : 'es', viewMode: 'years', format: 'YYYY/MMM/DD'});
+        });
+    </script>
+</body>
+
+</html>

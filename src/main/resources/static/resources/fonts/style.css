@@ -1,0 +1,280 @@
+/*!
+ * Start Bootstrap - Modern Business (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+/* Global Styles */
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    padding-top: 85px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+.img-portfolio {
+    margin-bottom: 30px;
+}
+
+.img-hover:hover {
+    opacity: 0.8;
+}
+
+/* Home Page Carousel */
+
+header.carousel {
+    height: 50%;
+}
+
+header.carousel .item,
+header.carousel .item.active,
+header.carousel .carousel-inner {
+    height: 100%;
+}
+
+header.carousel .fill {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+
+/* 404 Page Styles */
+
+.error-404 {
+    font-size: 100px;
+}
+
+/* Pricing Page Styles */
+
+.price {
+    display: block;
+    font-size: 50px;
+    line-height: 50px;
+}
+.navbar-brand{
+    height: 25%;
+    width: 25%;
+}
+
+.price sup {
+    top: -20px;
+    left: 2px;
+    font-size: 20px;
+}
+
+.period {
+    display: block;
+    font-style: italic;
+}
+
+/* Footer Styles */
+
+footer {
+    margin: 50px 0;
+}
+
+body{
+    background-color: #F2F2F2;
+}
+
+
+.header .jumbotron{
+    background-color: #A4A4A4;
+    color: white;
+    padding-left: 25%;
+
+}
+.form-inline{
+    margin-left: 5%;
+}
+
+
+
+
+.footer-content{
+    text-align: center;
+    margin: 0px;
+    color: white;
+}
+
+.panel-footer{
+    background-color: black;
+    padding: 0px;
+    bottom:0;
+    width:100%  ;
+}
+.container-fluid{
+    padding: 0px;
+}
+
+
+
+
+
+#logo{
+    width: 180px;
+}
+
+#menu{
+    padding-top: 2%;
+}
+
+#header{
+    background-color: white;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus{
+    color:#97BD12;
+}
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color:#97BD12;
+    background-color: transparent;
+}
+
+.navbar-inverse .navbar-nav > li > a{
+    color:#3A2F0B;
+}
+
+.page-header{
+    border-bottom: 1px solid #3A2F0B;
+}
+
+#footer{
+    background-color: #97BD12;
+    color:#3A2F0B;
+    border-color: #3A2F0B;
+    height: 10px;
+}
+
+.navbar-default .navbar-text{
+    color:#3A2F0B;
+}
+
+h1{
+    color:#97BD12;
+}
+h2{
+    color:#97BD12;
+}
+h3{
+    color:#97BD12;
+}
+h4{
+    color:#97BD12;
+}
+h5{
+    color:#3A2F0B;
+}
+h6{
+    color:white;
+}
+h1 small{
+    color:#3A2F0B;
+}
+#letraPdf{
+    color: #97BD12;
+}
+p{
+    text-align: justify;
+}
+
+.btn-primary{
+    background-color: #97BD12;
+    border-color: #3A2F0B;
+}
+
+.btn-primary:hover{
+    background-color:#3A2F0B;
+}
+
+a{
+    color:#3A2F0B;
+}
+a:hover{
+    text-decoration: none;
+    color:#97BD12;
+}
+
+#lista{
+    margin-bottom: 75px;
+}
+#relationedTrip{
+    margin-bottom: 75px;
+}
+
+
+
+
+
+
+
+
+/* Responsive Styles */
+
+@media(max-width:991px) {
+    .customer-img,
+    .img-related {
+        margin-bottom: 30px;
+    }
+    .navbar-toggle{
+        background-color: #97BD12;
+    }
+}
+
+@media(max-width:767px) {
+    .img-portfolio {
+        margin-bottom: 15px;
+    }
+
+    header.carousel .carousel {
+        height: 70%;
+    }
+    .navbar-toggle{
+        background-color: #97BD12;
+    }
+}
+
+#price{
+    height:50px;
+    font-size: 30px;
+
+}
+.pcentrado{
+    text-align: center;
+}
+#dates{
+    text-align: center;
+    margin: 20px;
+
+    padding-left: 0px;
+    padding-right: 0px;
+    width:112px;
+    height:157px;
+}
+#nametrip{
+    height:50px;
+    font-size: 30px;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+#daystrip{
+    height:40px;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+#suplementtrip{
+    height:20px;
+    font-size: 10px;
+}
+#datehead{
+
+    padding-bottom: 0px;
+
+}
+#dateday{
+    font-size: 20px;
+}

@@ -1,0 +1,47 @@
+<html>
+    <div th:insert="~{fragments/head :: head}">...</div>
+    <body>
+        <div th:insert="~{fragments/header :: body}">...</div>
+        <hr>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3 th:text="#{addHotel}"></h3>
+                    <form th:action="@{/hotel/new}"  th:object="${hotel}" method="post" enctype="multipart/form-data">
+                        <div class="control-group form-group">
+                            <label th:text="#{nameHotel}"></label>
+                            <div class="form-group">
+                                <input type="text" th:placeholder="#{nameHotel}" class="form-control"  th:field="*{name}" >
+                                <span class="text-danger" th:errors="*{name}"></span>
+                            </div>
+                        </div>
+                        <div class="control-group form-group">
+                            <label th:text="#{categoryHotel}"></label>
+                            <div class="form-group">
+                                <select th:field="*{category}"  class="form-control">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group form-group">
+                            <label th:text="#{AdressHotel}"></label>
+                            <div class="form-group">
+                                <input type="text" th:placeholder="#{AdressHotel}" class="form-control"  th:field="*{location}" >
+                                <span class="text-danger" th:errors="*{location}"></span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary"  th:text="#{add}"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div th:insert="~{fragments/footer :: body}">...</div>
+
+    </body>
+
+</html>

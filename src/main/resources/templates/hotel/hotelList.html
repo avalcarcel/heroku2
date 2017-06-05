@@ -1,0 +1,65 @@
+<html>
+    <div th:insert="~{fragments/head :: head}">...</div>
+    <body>
+        <div th:insert="~{fragments/header :: body}">...</div>
+        <div class="container" id="lista">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 th:text="#{hotelList}" class="page-header"></h1>
+                </div>
+            </div>
+            <!-- MODAL BOX !-->
+            <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel" th:text="#{ConfirmDelete}"></h4>
+                        </div>
+                        <div class="modal-body">
+                            <p th:text="#{messageDelete}"></p>
+                            <p th:text="#{messageDelete2}"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{cancel}"> </button>
+                            <a  class="btn btn-danger btn-ok" th:text="#{delete}"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /modal box -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-hover" cellpadding="10">
+                        <thead>
+                            <tr>
+                                <th th:text="#{nameHotel}"></th>
+                                <th class="fa fa-star" aria-hidden="true" th:text="#{categoryHotel}"></th>                    
+                                <th th:text="#{AdressHotel}"></th>
+                                <th th:text="#{deleteHotel}"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="hotel : ${list}"  >
+                                <td th:text="${hotel.name}"/>
+                                <td th:text="${hotel.category}"/>
+                                <td th:text="${hotel.location}"/>
+                                <td><a class="btn btn-danger" href="#" th:data-href="@{/hotel/delete/}+${hotel.id}" data-toggle="modal" data-target="#confirm-delete" th:text="#{delete}"></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+            </div>
+            <script>
+                $('#confirm-delete').on('show.bs.modal', function (e) {
+                    $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+
+                    $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+                });
+            </script>
+            <div th:insert="~{fragments/footer :: body}">...</div>
+
+    </body>
+
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html th:switch="${session.lang}">
+    <div th:insert="~{fragments/head :: head}">...</div>
+    <body>
+        <div th:insert="~{fragments/header :: body}">...</div>
+        <hr>
+        <div class="container" id="lista">
+            <div class="row">
+                <div class="col-md-8">
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img class="img-responsive" th:src="@{${trip.image}}" alt="">
+                            </div>
+                            <div th:each="image : ${trip.img}" class="item ">
+                                <img class="img-responsive"   th:src="@{${image.url}}"  alt="">
+                            </div>
+                        </div> 
+                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <h3 th:text="${trip.name}"/>
+                    <div th:if="${session.user == null}">
+                        <p th:text="${trip.descripcion_en}"></p>
+                    </div>
+                    <div th:unless="${session.user == null}">
+                        <p th:case="'es'" th:text="${trip.descripcion_es}"></p>
+                        <p th:case="'ca'" th:text="${trip.descripcion_ca}"></p>
+                        <p th:case="'en'" th:text="${trip.descripcion_en}"></p>
+                    </div>
+                    <h5 th:text="#{prix}"></h5>
+                    <ul>
+                        <li>
+                            <b th:text="${trip.pricesingle}"></b> <b th:text="#{price}"></b>
+                        </li>
+                    </ul>
+                    <a th:if="${session.user != null && session.user != 'admin@admin.com'}" class="btn btn-primary" th:href="@{/book/form/}+${trip.id}" th:text="#{reservar}"></a>
+                    <a   th:if="${session.user == 'admin@admin.com'}" class="btn btn-danger" th:href="@{/trip/delete/}+${trip.id}" th:text="#{deleteTip}" />
+                    <span th:if="${session.user == null}" class="label label-info">If You want to book, You must go to your favorite Travel Agency</span>
+                    
+                    <hr>
+                          
+                            <div id="dates"  class = "panel panel-success  col-xs-6 col-md-3">
+                                  <b th:text="#{firstDeparture}" />
+                                    <div id="datehead"  class = "panel-heading">
+                                        <p  class="pcentrado" th:text="${#dates.dayOfWeekName(trip.departurefirst).toUpperCase()}"></p>
+                                    </div>
+                                    <div class = "panel-body">
+                                        <b  class="pcentrado" id="dateday" th:text="${#dates.day(trip.departurefirst)}"></b>
+                                        <p  class="pcentrado" th:text="${#dates.monthName(trip.departurefirst).toUpperCase()}"></p>
+                                        <p  class="pcentrado" th:text="${#dates.year(trip.departurefirst)}"></p>
+                                    </div>
+                                </div>
+                             
+                               
+                                
+                            <div id="dates"  class = "panel panel-success  col-xs-6 col-md-3">
+                                <b th:text="#{lastDeparture}" />
+                                    <div id="datehead"  class = "panel-heading">
+                                        <p  class="pcentrado" th:text="${#dates.dayOfWeekName(trip.departurelast).toUpperCase()}"></p>
+                                    </div>
+                                    <div class = "panel-body">
+                                        <b  class="pcentrado" id="dateday" th:text="${#dates.day(trip.departurelast)}"></b>
+                                        <p  class="pcentrado" th:text="${#dates.monthName(trip.departurelast).toUpperCase()}"></p>
+                                        <p  class="pcentrado" th:text="${#dates.year(trip.departurelast)}"></p>
+                                    </div>
+                            </div>
+                       
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="page-header" th:text="#{services}"></h2>
+                </div>
+                <div class="col-lg-12">
+                    <ul id="myTab" class="nav nav-tabs nav-justified">
+                        <li class="active"><a href="#service-one" data-toggle="tab"><i class="fa fa-plane"></i><b th:text="#{itinerary}"></b></a>
+                        </li>
+                        <li class=""><a href="#service-two" data-toggle="tab"><i class="fa fa-bed"></i><b th:text="#{hotels}"></b></a>
+                        </li>
+                        <li class=""><a href="#service-three" data-toggle="tab"><i class="fa fa-calendar"></i><b th:text="#{dates}"></b></a>
+                        </li>
+                        <li class=""><a href="#service-four" data-toggle="tab"><i class="fa fa-exclamation-circle"></i><b th:text="#{conditions}"></b></a>
+                        </li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade active in" id="service-one">
+                            <div th:if="${session.user == null}">
+                                <h4>Itinerary</h4>
+                            </div>
+                            <div th:unless="${session.user == null}">
+                                <h4 th:text="#{itinerary}"></h4>
+                            </div>
+
+                            <div th:if="${session.user == null}" th:each="it,iter : ${trip.itineraries}">
+                                <b th:text="#{itineraryDay}+${iter.index+1}"></b>
+                                <p th:text="${it.day_en}"></p>
+                            </div>
+                            <div th:unless="${session.user == null}" th:switch="${session.lang}" th:each="it,iter : ${trip.itineraries}">
+                                <b th:text="#{itineraryDay}+${iter.index+1}"></b>
+                                <p th:case="'es'" th:text="${it.day_es}"></p>
+                                <p th:case="'ca'" th:text="${it.day_ca}"></p>
+                                <p th:case="'en'" th:text="${it.day_en}"></p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="service-two">
+                            <h4 th:text="#{hotels}"></h4>
+                            <div  th:each="hotel : ${trip.hotels}">
+                                <div class="col-md-3 text-center align-middle">
+                                    <img th:src="@{/resources/images/utils/hotel.png}">
+                                    <p  th:text="${hotel.name}"></p>
+                                    <p  th:text="${hotel.location}"></p>
+                                    <div class="col-md-12 col-xs-12">
+                                        <div th:each="i :${new int [hotel.category]}" >
+                                            <p class="fa fa-star col-xs-1 col-md-1" aria-hidden="true"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade centrado" id="service-three">
+                            <h4 th:text="#{dates}"></h4>
+                            
+                            
+                            <div th:each="date : ${trip.dates}">
+                                <div id="dates"  class = "panel panel-primary col-xs-6 col-md-3">
+                                    <div id="datehead"  class = "panel-heading">
+                                        <p  class="pcentrado" th:text="${#dates.dayOfWeekName(date.departuredates).toUpperCase()}"></p>
+                                    </div>
+                                    <div class = "panel-body">
+                                        <b  class="pcentrado" id="dateday" th:text="${#dates.day(date.departuredates)}"></b>
+                                        <p  class="pcentrado" th:text="${#dates.monthName(date.departuredates).toUpperCase()}"></p>
+                                        <p  class="pcentrado" th:text="${#dates.year(date.departuredates)}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="service-four">
+                            <div th:if="${session.user == null}">
+                                <h4>Conditions</h4>
+                                <p>Visas, airport taxes and / or fees and out, vaccination certificates, "extras" such as coffee, wine, spirits, mineral water, special diets-even in the case of full board or half pension, unless expressly agreed in the contract one else-washing and ironing, optional hotel services, and in general, any other service not included specifically in the section 'the price of the package includes "stating whether or not specifically detailed in the program / offer, in the contract or in the documentation that is delivered to subscribing consumers.</p>
+                                <p>Cancellation fees consist of: · 20% of the total amount of the stay 20 to 30 days before departure. · 30% of the total amount of the stay 10 to 19 days before departure. · 75% of the total amount of the stay 5 to 9 days before departure. · 100% of the total stay Until four days before departure. In all the cases listed above, the penalty for cancellation could be increased with the amount of air tickets, if you have them, if they were already cast. Failure to appear at the scheduled time for departure, the user or consumer is not entitled to any refund of the amount paid.</p>
+                            </div>
+                            <div th:unless="${session.user == null}">
+                                <h4 th:text="#{conditions}"></h4>
+                                <p th:text="#{conditionsL}"></p>
+                                <p th:text="#{conditions2}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="relationedTrip">
+                <div class="col-lg-12">
+                    <h3 class="page-header"th:text="#{products}"></h3>
+                </div>
+                <div  th:each="r : ${ramdon}"  >
+                    <p ></p>
+                    <div class="col-sm-3 col-xs-6">
+                        <div  style="width: 300px; height: 150px; padding: 30px;">
+                            <a th:href="${r.id}">
+                                <img class="img-responsive img-hover img-related"  height="100%" width="100%" th:src="@{${r.getImage()}}"  alt="">
+                            </a>
+                            <b  style="text-align: center;font-size: 20px;" th:text="${r.name}"></b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:insert="~{fragments/footer :: body}">...</div>
+        </div>
+    </body>
+</html>

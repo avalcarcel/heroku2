@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
+        <script src="https://raw.githubusercontent.com/MrRio/jsPDF/master/plugins/from_html.js"></script>
+        <script src="https://raw.githubusercontent.com/MrRio/jsPDF/master/plugins/split_text_to_size.js"></script>
+        <script src="https://raw.githubusercontent.com/MrRio/jsPDF/master/plugins/standard_fonts_metrics.js"></script>
+
+    <div th:insert="~{fragments/head :: head}">...</div>
+    <style>
+        /* ModalBox (fondo) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        /* Modal BOX Contenido */
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: 80%;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        /* Modal BOX Animacion */
+        @-webkit-keyframes animatetop {
+            from {top:-300px; opacity:0} 
+            to {top:0; opacity:1}
+        }
+
+        @keyframes animatetop {
+            from {top:-300px; opacity:0}
+            to {top:0; opacity:1}
+        }
+
+        /* Boton cerrar Modal BOX*/
+        .close {
+            color: black;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+
+        }
+
+        .modal-body {padding: 2px 16px;}
+
+        .modal-footer {
+            padding: 2px 16px;
+
+        }
+    </style>
+</head>
+<body onload="printPDF()">
+    <div th:insert="~{fragments/header :: body}">...</div>
+    <hr />
+    <div id="lista" class="container">
+        <div class="row">
+            <div class="col-md-4"></div> 
+            <div class="col-md-4"><h1>Booking process Successful!!</h1></div>
+            <div class="col-md-4"><button id="myBtn" class="btn btn-primary">See Booking Information</button></div> 
+        </div>
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">&times;</span>
+                    <h2 class="text-center">Book Info</h2>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped" cellpadding="10">
+                        <thead>
+                            <tr>
+                                <th>Localizador</th>
+                                <th>Trip</th>
+                                <th>Num. Pax</th>
+                                <th>Trip Date</th>
+                                <th>PvP</th>
+                                <th>DNI</th>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="loc" th:text="${book.id}"/>
+                                <td th:text="${book.idtrip.name}"/>
+                                <td th:text="${book.num_Pax}"/>
+                                <td th:text="${book.date}"/>
+                                <td th:text="${book.pvp}"/> 
+                                <td th:text="${dni}"/>
+                                <td th:text="${nombre}"/>
+                                <td th:text="${apellidos}"/>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div id="pdf" class="hidden">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1>NatureCity Tours</h1>
+                <h6>.</h6>
+                <b id="letraPdf">LOC</b> <b id="loc" th:text="${book.id}"></b>
+                <h6>.</h6>
+                <b id="letraPdf">TRIP</b> <b th:text="${book.idtrip.name}"></b>
+                <h6>.</h6>
+                <b id="letraPdf">NUM PAX</b> <b th:text="${book.num_Pax}"></b>
+                <h6>.</h6>
+                <b id="letraPdf">TRIP DATE</b> <b th:text="${book.date}"></b>
+                <h6>.</h6>
+                <b id="letraPdf">PVP</b> <b th:text="${book.pvp}"></b>
+                <h6>.</h6>
+                <b id="letraPdf">DNI</b> <b th:text="${dni}"></b>
+                <h6>.</h6>
+                <b id="letraPdf">NAME</b> <b th:text="${nombre}"></b>
+                <h6>.</h6>
+                <b id="letraPdf">SURNAME</b> <b th:text="${apellidos}"></b>
+                <h6>.</h6>
+                <h4>Política de cancelación</h4>
+                <p style="font-size: 8px; text-align: justify;">La cancelación de los servicios contratados, se podrá efectuar solo 90 días antes del comienzo del viaje, teniendo en este caso una retención en concepto de gastos del 10% del importe total del tour. Con posterioridad a esa fecha y hasta 30 días del comienzo del viaje, el pasajero podrá transferir su pasaje a otra persona, debiendo ambos presentarse en la oficina de la Agencia de Viajes Minorista para suscribir la documentación respectiva. Dentro de los 30 días a la fecha de salida, no habrá devolución ni posibilidad de transferencia de pasajes a otra persona. Toda notificación a NaturCity Tours debe ser efectuada en forma fehaciente.</p>
+                <h6>.</h6>
+                <h4>Documentación</h4>
+                <p style="font-size: 8px; text-align: justify;">Para los viajes internacionales es necesario atender la legislacion vigente en cada caso, siendo responsabilidad del pasajero informarse de los requisitos que cada país exige como ser visados, documentacion, requisitos sanitarios etc. Todos los viajeros deberán llevar en regla su documentación personal, pasaportes, visado, certificados de vacunación, etc. Se declina toda responsabilidad en caso de ser rechazada por alguna autoridad la concesión del visado, por causas particulares del cliente, o ser denegada su entrada en un país, por carecer de algunos de los requisitos que se exigen o defecto del pasaporte, etc., será por cuenta del viajero cualquier gasto que se origine, aplicándole en estas circunstancias las condiciones establecidas para anulación y desistimiento voluntario de servicios.</p>
+                <h6>.</h6>
+            </div>
+            <div class="col-md-2">Sello de la agencia:</div>             
+        </div>
+        <hr />
+        <div th:insert="~{fragments/footer :: body}">...</div> 
+    </div>
+    <script>
+        // modalBOX
+        var modal = document.getElementById('myModal');
+
+        // obre el modalBOX
+        var btn = document.getElementById("myBtn");
+        var span = document.getElementsByClassName("close")[0];
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // Serveix per tancar la modalBOX
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        /**
+         * 
+         * Funcio en JS que crea el pdf
+         */
+        function printPDF() {
+            // var logo =new Image();
+            //logo.src='https://raw.githubusercontent.com/freeGamesUF6/nctours/master/src/main/resources/static/resources/images/logoGrande.jpg';
+            var printDoc = new jsPDF();
+            //printDoc.addImage(logo, 'JPEG', 30, 100, 180, 180);
+
+            //printem el format del pdf
+            printDoc.rect(25, 29, 78, 0.1);
+            printDoc.rect(25, 45, 76, 0.1);
+            printDoc.rect(25, 60, 76, 0.1);
+            printDoc.rect(25, 75, 76, 0.1);
+            printDoc.rect(25, 88, 76, 0.1);
+            printDoc.rect(25, 102, 76, 0.1);
+            printDoc.rect(25, 116, 76, 0.1);
+            printDoc.rect(25, 130, 76, 0.1);
+            printDoc.rect(23, 34, 80, 110);
+            //printem el contingut del pdf
+            printDoc.fromHTML($('#pdf').get(0), 25, 10, {'width': 180});
+            printDoc.autoPrint();
+            printDoc.output("dataurlnewwindow"); // obre una nova pestanya amb el pdf preparat per imprimir
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<html>
+    <div th:insert="~{fragments/head :: head}">...</div>
+
+    <body>
+        <div th:insert="~{fragments/header :: body}">...</div>
+        <hr>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>Register</h3>
+                    <form th:action="@{/user/new}"  th:object="${user}"  id="userForm" method="post" enctype="multipart/form-data">
+                        <div class="control-group form-group has-feedback">
+                            <div class="controls">
+                                <label>Email Address:</label>
+                                <input type="email" placeholder="example@example.com" class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" th:field="*{email}" >
+                                <span class="text-danger" th:errors="*{email}"></span>
+                            </div>
+                        </div>
+                        <div class="control-group form-group">
+                            <label for="inputPassword" class="control-label">Password</label>
+                            <div class="form-group">
+                                <input type="password" class="form-control" th:field="*{password}" name="Password" placeholder="Password" required>
+                                <span class="text-danger" th:errors="*{password}"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control"  placeholder="Confirm Password"  required>
+                            </div>
+                        </div>
+                        <div id="success"></div>
+                        <button type="submit" class="btn btn-primary">sign up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div th:insert="~{fragments/footer :: body}">...</div>
+    </body>
+</html>

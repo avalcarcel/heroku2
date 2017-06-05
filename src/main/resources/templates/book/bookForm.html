@@ -1,0 +1,91 @@
+<html>
+    <div th:insert="~{fragments/head :: head}">...</div>
+    <body>
+        <div th:insert="~{fragments/header :: body}">...</div>
+        <hr>
+        <div class="container">
+            <div class="row">
+                <h3 th:text="#{form}"></h3>
+                <form th:action="@{saveBook}" class="form-inline"  name="formPax" method="get" >
+                    <div class="form-group">
+                        <label for="sel1" th:text="#{salidas}"></label>
+                        <select class="form-control" id="fecha">
+                            <option th:text="#{salidas}"></option>
+                            <option th:each="fecha : ${dates}" th:value="${fecha.departuredates}"><p th:text="${fecha.departuredates}"></p></option>
+                        </select>
+                    </div>
+                    <div class="pasajeros">
+                    </div>
+                    <div class="input_fields_wrap" >
+                        <button class="add_field_button btn btn-default" th:text="#{addPax}"></button><br /><br />
+                    </div>   
+                </form>
+                <form action="/book/saveBook"  name="Book" id="contactForm"  method="get">
+                    <input type="hidden" id="paxs" name="paxs"/>
+                    <input type="hidden" id="idtrip" th:value="*{idTrip}" name="idTrip"/>
+                    <input type="hidden" id="date" name="date"/>
+                    <button type="submit" onclick="addPaxInfo()" class="btn btn-primary" th:text="#{reservar}"></button>
+                </form>
+            </div>
+        </div>
+        <hr>
+        <div th:insert="~{fragments/footer :: body}">...</div>
+        <script type="text/javascript">
+            //Funcio amb JS pur. xavi
+            /*function numeroPax(){
+             var numPax=document.getElementById("pax").value;
+             for(i=1;i<=numPax;i++){
+             document.getElementById("pasajeros").innerHTML=numPax;
+             document.getElementById("pasajeros").innerHTML+='<div class="pax'+i+'"><h3>PASAJERO '+i+'</h3><div class="control-group form-group"><div class="controls"><label>DNI :</label><input type="text" class="form-control" id="dni required data-validation-required-message="Introduzca el DNI del PAX."></div></div><div class="control-group form-group"><div class="controls"><label>Nombre:</label><input type="text" class="form-control" id="name" required data-validation-required-message="Introduzca el nombre del PAX."><p class="help-block"></p></div></div><div class="control-group form-group"><div class="controls"><label>Apellidos:</label><input type="text" class="form-control" id="surname" required data-validation-required-message="Introduzca el apellido del PAX."></div></div><div class="control-group form-group"><div class="controls"><label>Fecha Nacimiento:</label><input type="text" class="form-control" id="dob" required data-validation-required-message="Introduzca el Facha naciemiento del PAX."></div></div><div class="control-group form-group"><div class="controls"><label>Pasaporte:</label><input type="text" class="form-control" id="passport" required data-validation-required-message="Introduzca el pasaporte del PAX."></div></div><div class="control-group form-group"><div class="controls"><label>Fecha Caducidad Pasaporte:</label><input type="text" class="form-control" id="passportexpiry" required data-validation-required-message="Introduzca caducidad del passaporte del PAX."></div></div>';
+             }
+             }*/
+            //Funcions amb JQuery. Xavier
+            //afegeix passatgers
+            $(document).ready(function () {
+                var max_fields = 9;
+                var wrapper = $(".pasajeros");
+                var add_button = $(".add_field_button");
+
+                var i = 1;
+                $(add_button).click(function (e) {
+                    e.preventDefault();
+                    if (i <= max_fields) {
+                        $(wrapper).append('<div class="pax' + i + '"><h4>PAX ' + i + '</h4><hr/><div class="control-group form-group"><div class="controls"><label>DNI :</label><input type="text" class="form-control" th:field="*{dni}" id="dni' + i + '" required data-validation-required-message="Introduzca el DNI del PAX."></div></div><div class="control-group form-group"><div class="controls"><label>Nombre:</label><input type="text" class="form-control" id="name' + i + '" th:field="*{name}" required data-validation-required-message="Introduzca el nombre del PAX."><p class="help-block"></p></div></div><div class="control-group form-group"><div class="controls"><label>Apellidos:</label><input type="text" class="form-control" id="surname' + i + '" th:field="*{surname}" required data-validation-required-message="Introduzca el apellido del PAX."></div></div><div class="control-group form-group"><div class="controls"><label>Fecha Nacimiento:</label><input type="text" class="form-control" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[012]).[0-9]{4}" id="dob' + i + '" th:field="*{dob}" required data-validation-required-message="Introduzca el Facha naciemiento del PAX."></div></div><div class="control-group form-group"><div class="controls"><label>Pasaporte:</label><input type="text" class="form-control" id="passport' + i + '" th:field="*{passport}" required data-validation-required-message="Introduzca el pasaporte del PAX."></div></div><div class="control-group form-group"><div class="controls"><label>Fecha Caducidad Pasaporte:</label><input type="text" class="form-control" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[012]).[0-9]{4}" id="passportexpiry' + i + '" th:field="*{passportexpiry}" required data-validation-required-message="Introduzca caducidad del passaporte del PAX."></div></div><a href="#" class="input-group-addon remove_field">Remove</a><hr /></div><br/>');
+
+                        i++;
+
+                    }
+
+                });
+                //eliminar passatgers
+                $(wrapper).on("click", ".remove_field", function (e) {
+                    e.preventDefault();
+                    $(this).parent('div').remove();
+                    i--;
+                })
+            });
+
+            //guarda l'informació de cada passatger en un String separat per comes, cada pax es dividit per punt i coma
+            function addPaxInfo() {
+                var numPax = $("div[class^='pax']").size();
+                var paxs = "";
+                for (i = 1; i <= numPax; i++) {
+                    var dni = $("#dni" + i).val();
+                    var nombre = $("#name" + i).val();
+                    var apellidos = $("#surname" + i).val();
+                    var dob = $("#dob" + i).val();
+                    var passport = $("#passport" + i).val();
+                    var cadPassport = $("#passportexpiry" + i).val();
+                    paxs += dni + "," + nombre + "," + apellidos + "," + dob + "," + passport + "," + cadPassport + ";";
+                }
+                ;
+                $("#paxs").val(paxs);
+                var date = $("#fecha").val();
+                $("#date").val(date);
+
+            }
+
+
+        </script>
+    </body>
+</html>
